@@ -1,9 +1,11 @@
-package ytcrawler
+package middleware
 
 import (
 	"encoding/json"
 	"io/ioutil"
+	"log"
 	"os"
+	ytcrawler "yt_crawler/components"
 )
 
 type DecryptFuncs int
@@ -28,7 +30,7 @@ type VideoSignDecrypter struct {
 	rulesJson *DecryptRuleJson
 }
 
-func (m *VideoSignDecrypter) ReloadRules() error {
+func (m *VideoSignDecrypter) Reload() error {
 	newFile := DecryptRuleJson{}
 	_, err := os.Stat(BaseDecryptRuleJsonFile)
 	if err != nil {
@@ -86,4 +88,19 @@ func (m *VideoSignDecrypter) reverse() {
 
 func (m *VideoSignDecrypter) splice(b int) {
 	m.temp = append(m.temp[0:0], m.temp[b:]...)
+}
+
+//--------------------------Middleware---------------------------
+
+func DecryptSignMiddleware() ytcrawler.HandlerFunc {
+	decryptRuleParser.Initial(exctractFuncAndParamRegex)
+	return func(c *ytcrawler.Context) {
+		rules, err := decryptRuleParser.Parse(c.PrevOutput().([]byte))
+		if err != nil {
+			c.Abort()
+			log.Println(err.Error())
+		}
+
+		c.Next(rules)
+	}
 }

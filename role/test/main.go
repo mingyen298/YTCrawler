@@ -110,13 +110,13 @@ func main() {
 		ruleCollector.Use(middleware.ExtractDecryptRuleMiddleware(), middleware.ParseDecryptRuleMiddleware())
 		c1 := ruleCollector.Proccess(b)
 		rules := c1.PrevOutput().([]ytcrawler.DecryptRule)
-		fmt.Println(rules)
+		// fmt.Println(rules)
 
 		decryFuncCollector := ytcrawler.ReceiveAgent{}
 		decryFuncCollector.Use(middleware.ExtractDecryptFuncMiddleware(), middleware.ParseDecryptFuncMiddleware())
 		c2 := decryFuncCollector.Proccess(b)
 		funcMap := c2.PrevOutput().(map[string]int)
-		fmt.Println(funcMap)
+		// fmt.Println(funcMap)
 
 		file := ytcrawler.DecryptRuleJson{Rules: rules, FuncMap: funcMap}
 		data, _ := json.Marshal(file)
