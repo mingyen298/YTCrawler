@@ -1,0 +1,25 @@
+
+    Jwa = function (a) {
+         a = a.split(""); 
+         NB.dF(a, 19); 
+         NB.Reverse(a, 28); 
+         NB.Splice(a, 3); 
+         NB.dF(a, 32); 
+         NB.dF(a, 2); 
+         NB.dF(a, 31); 
+         return a.join("") 
+    };
+
+    var NB = {
+        dF: function (a, b) { 
+            var c = a[0]; 
+            a[0] = a[b % a.length]; 
+            a[b % a.length] = c 
+        },
+        Reverse: function (a) { a.reverse() },
+        Splice: function (a, b) { a.splice(0, b) }
+    };
+
+    a = "9AV3AjEbCrhtCnADKZ1=9fmyppUvlyh-72zoYNgLbOitAEiAL5hUNIT0pF1HUWc_hsu_A0NqAeXurdGMmLjIVXfX2zOAhIgRw8JQ0tO_tO_"
+    sig = Jwa(a)
+    console.log(sig)
